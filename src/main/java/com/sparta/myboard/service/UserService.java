@@ -24,13 +24,14 @@ public class UserService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
     private final PasswordEncoder passwordEncoder;
+
+    // ADMIN_TOKEN
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
     @Transactional
     public SignupResponseDto signup(SignupRequestDto signupRequestDto){
         //받아온 유저네임과 패스워드를 변수에 저장
         String username = signupRequestDto.getUsername();
-        //String password = signupRequestDto.getPassword();
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
 
         //회원 중복 확인, 받아온 값이 유저레포지토리에 있는지 확인
@@ -55,7 +56,7 @@ public class UserService {
         return new SignupResponseDto("회원가입 성공", HttpStatus.OK.value());
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public LoginResponseDto login(LoginRequestDto loginRequestDto, HttpServletResponse response){
         String username = loginRequestDto.getUsername();
         String password = loginRequestDto.getPassword();
@@ -67,7 +68,7 @@ public class UserService {
 
         //비밀번호 확인
         if(!passwordEncoder.matches(password, user.getPassword())){
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw  new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername(), user.getRole()));

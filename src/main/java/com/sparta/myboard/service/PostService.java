@@ -6,16 +6,11 @@ import com.sparta.myboard.dto.PostResponseDto;
 import com.sparta.myboard.entity.Post;
 import com.sparta.myboard.entity.User;
 import com.sparta.myboard.entity.UserRoleEnum;
-import com.sparta.myboard.jwt.JwtUtil;
 import com.sparta.myboard.repository.PostRepository;
-import com.sparta.myboard.repository.UserRepository;
-import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,8 +19,6 @@ import java.util.stream.Collectors;
 public class PostService {
 
     private final PostRepository postRepository;
-    private final UserRepository userRepository;
-    private final JwtUtil jwtUtil;
 
     //@Transactional -> acid캐시를 깨지지 않게 해줌
     @Transactional(readOnly = true)
@@ -38,9 +31,8 @@ public class PostService {
     }
 
     @Transactional
-    public PostResponseDto creatPost(PostRequestDto requestDto, HttpServletRequest httpServletRequest) {
+    public PostResponseDto creatPost(PostRequestDto requestDto, User user) {
         //토큰 검사
-        User user = getUserInfo(httpServletRequest);
 
         Post post = new Post(requestDto, user.getUsername());
         post = postRepository.save(post);
@@ -57,52 +49,37 @@ public class PostService {
     }
 
     @Transactional
-    public PostResponseDto updatePost(Long id, PostRequestDto requestDto, HttpServletRequest httpServletRequest) {
-        User user = getUserInfo(httpServletRequest);
+    public PostResponseDto updatePost(Long id, PostRequestDto requestDto, User user) {
 
-        if (postRepository.existsByIdAndUsername(id, user.getUsername()) || user.getRole().equals(UserRoleEnum.ADMIN)) {
+        UserRoleEnum userRoleEnum = user.getRole();
+
+        if (userRoleEnum == UserRoleEnum.ADMIN) {
+            Post post = postRepository.findById(id).get();
+            post.update(requestDto, user.getUsername());
+            return new PostResponseDto(post);
+        } else if (postRepository.existsByIdAndUsername(id, user.getUsername()) && userRoleEnum == UserRoleEnum.USER) {
             Post post = postRepository.findById(id).get();
             post.update(requestDto, user.getUsername());
             return new PostResponseDto(post);
         } else {
-            throw new IllegalArgumentException("게시글을 찾을 수 없습니다.");
+            throw new IllegalArgumentException("게시글을 삭제할 수 없습니다.");
         }
     }
 
     @Transactional
-    public PostDeleteResponseDto deletePost(Long id, HttpServletRequest httpServletRequest) {
-        User user = getUserInfo(httpServletRequest);
+    public PostDeleteResponseDto deletePost(Long id, User user) {
+
+        UserRoleEnum userRoleEnum = user.getRole();
 
         //유효한 토큰일 경우 삭제
-        if (postRepository.existsByIdAndUsername(id, user.getUsername()) || user.getRole().equals(UserRoleEnum.ADMIN)) {
+        if (user.getRole().equals(UserRoleEnum.ADMIN)) {
+            postRepository.deleteById(id);
+            return new PostDeleteResponseDto("게시글 삭제 성공", HttpStatus.OK.value());
+        } else if (postRepository.existsByIdAndUsername(id, user.getUsername()) && userRoleEnum == UserRoleEnum.USER){
             postRepository.deleteById(id);
             return new PostDeleteResponseDto("게시글 삭제 성공", HttpStatus.OK.value());
         } else {
             throw new IllegalArgumentException("게시글 삭제 실패");
-        }
-    }
-
-
-    private User getUserInfo(HttpServletRequest httpServletRequest) {
-        String token = jwtUtil.resolveToken(httpServletRequest);
-        Claims claims;
-
-        //유효한 토큰일 경우 수정 가능
-        if (token != null) {
-            if (jwtUtil.validateToken(token)) {
-                // 토큰에서 사용자 정보 가져오기
-                claims = jwtUtil.getUserInfoFromToken(token);
-            } else {
-                throw new IllegalArgumentException("Token Error");
-            }
-
-            // 토큰에서 가져온 사용자 정보를 사용하여 DB 조회
-            User user = userRepository.findByUsername(claims.getSubject()).orElseThrow(
-                    () -> new IllegalArgumentException("Token Error")
-            );
-            return user;
-        } else {
-            throw new IllegalArgumentException("Token Error");
         }
     }
 }

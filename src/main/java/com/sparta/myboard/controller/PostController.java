@@ -1,15 +1,12 @@
 package com.sparta.myboard.controller;
 
-
 import com.sparta.myboard.dto.*;
-import com.sparta.myboard.entity.Post;
+import com.sparta.myboard.security.UserDetailsImpl;
 import com.sparta.myboard.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,8 +20,8 @@ public class PostController {
     }
 
     @PostMapping("/api/post") // 게시글 작성
-    public PostResponseDto createPost(@RequestBody PostRequestDto requestDto, HttpServletRequest httpServletRequest){
-        return postService.creatPost(requestDto, httpServletRequest);
+    public PostResponseDto createPost(@RequestBody PostRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return postService.creatPost(requestDto, userDetails.getUser());
     }
 
     @GetMapping("/api/post/{id}") // 선택한 게시글 조회
@@ -35,12 +32,12 @@ public class PostController {
     }
 
     @PutMapping("/api/post/{id}") //선택한 게시글 수정
-    public PostResponseDto updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto, HttpServletRequest httpServletRequest){
-        return postService.updatePost(id, requestDto, httpServletRequest);
+    public PostResponseDto updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return postService.updatePost(id, requestDto, userDetails.getUser());
     }
 
     @DeleteMapping("/api/post/{id}") //선택한 게시글 삭제
-    public PostDeleteResponseDto deletePost(@PathVariable Long id, HttpServletRequest httpServletRequest) {
-        return postService.deletePost(id, httpServletRequest);
+    public PostDeleteResponseDto deletePost(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+        return postService.deletePost(id, userDetails.getUser());
     }
 }

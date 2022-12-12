@@ -1,8 +1,7 @@
 package com.sparta.myboard.config;
 
-
-import com.sparta.myboard.jwt.JwtAuthFilter;
 import com.sparta.myboard.jwt.JwtUtil;
+import com.sparta.myboard.jwt.JwtAuthFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
@@ -47,7 +46,6 @@ public class WebSecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests().antMatchers("/api/user/**").permitAll()
-                .antMatchers("/api/search").permitAll()
                 .antMatchers("/api/posts").permitAll()
                 .anyRequest().authenticated()
                 // JWT 인증/인가를 사용하기 위한 설정
@@ -57,7 +55,6 @@ public class WebSecurityConfig {
         http.formLogin().loginPage("/api/user/login-page").permitAll();
 
         http.exceptionHandling().accessDeniedPage("/api/user/forbidden");
-
         return http.build();
     }
 

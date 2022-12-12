@@ -34,6 +34,7 @@ public class PostController {
     @PutMapping("/api/post/{id}") //선택한 게시글 수정
     public PostResponseDto updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
         return postService.updatePost(id, requestDto, userDetails.getUser());
+        // test
     }
 
     @DeleteMapping("/api/post/{id}") //선택한 게시글 삭제

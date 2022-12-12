@@ -80,6 +80,7 @@ public class PostService {
             return new PostDeleteResponseDto("게시글 삭제 성공", HttpStatus.OK.value());
         } else {
             throw new IllegalArgumentException("게시글 삭제 실패");
+            //새로운 출발...
         }
     }
 }

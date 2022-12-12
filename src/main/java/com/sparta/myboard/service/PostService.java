@@ -11,6 +11,7 @@ import com.sparta.myboard.repository.PostRepository;
 import com.sparta.myboard.repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -75,7 +76,7 @@ public class PostService {
         //유효한 토큰일 경우 삭제
         if (postRepository.existsByIdAndUsername(id, user.getUsername()) || user.getRole().equals(UserRoleEnum.ADMIN)) {
             postRepository.deleteById(id);
-            return new PostDeleteResponseDto();
+            return new PostDeleteResponseDto("게시글 삭제 성공", HttpStatus.OK.value());
         } else {
             throw new IllegalArgumentException("게시글 삭제 실패");
         }

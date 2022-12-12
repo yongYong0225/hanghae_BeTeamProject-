@@ -23,19 +23,11 @@ public class UserController {
 
     @PostMapping("/signup")
     public SignupResponseDto signup(@RequestBody/*http요청을 자바객체로*/ @Valid SignupRequestDto signupRequestDto) {
-        userService.signup(signupRequestDto); //userservice의 signup 메소드 실행(매게값 signupRequestDto)
-        return new SignupResponseDto();
+        return userService.signup(signupRequestDto); //userservice의 signup 메소드 실행(매게값 signupRequestDto)
     }
 
     @PostMapping("/login")
     public LoginResponseDto login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
-        userService.login(loginRequestDto, response);
-        return new LoginResponseDto();
+        return userService.login(loginRequestDto, response);
     }
-
-
-
-
-
-
 }

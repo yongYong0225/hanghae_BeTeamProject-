@@ -6,6 +6,11 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class LoginResponseDto {
-    private String msg = "로그인 완료";
-    private int statusCode = 200;
+    private String msg;
+    private int statusCode;
+
+    public LoginResponseDto(String msg, int statusCode) {
+        this.msg = msg;
+        this.statusCode = statusCode;
+    }
 }

@@ -29,7 +29,7 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private List<Post> post = new ArrayList<>();
 
-    public User(String username, String password) {
+    public User(String username, String password, UserRoleEnum role) {
         this.username = username;
         this.password = password;
     }

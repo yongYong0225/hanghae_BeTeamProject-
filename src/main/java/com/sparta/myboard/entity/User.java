@@ -32,5 +32,6 @@ public class User {
     public User(String username, String password, UserRoleEnum role) {
         this.username = username;
         this.password = password;
+        this.role = role;
     }
 }

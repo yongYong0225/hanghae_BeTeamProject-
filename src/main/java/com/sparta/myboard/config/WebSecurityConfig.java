@@ -48,7 +48,7 @@ public class WebSecurityConfig {
 
         http.authorizeRequests().antMatchers("/api/user/**").permitAll()
                 .antMatchers("/api/search").permitAll()
-                .antMatchers("/api/shop").permitAll()
+                .antMatchers("/api/posts").permitAll()
                 .anyRequest().authenticated()
                 // JWT 인증/인가를 사용하기 위한 설정
                 .and().addFilterBefore(new JwtAuthFilter(jwtUtil), UsernamePasswordAuthenticationFilter.class);

@@ -29,6 +29,9 @@ public class Post extends Timestamped{
     @Column (nullable = false)
     private String content;
 
+    @Column (nullable = false)
+    private int likeCount;
+
     @ManyToOne
     @JoinColumn(name="user_id")
     private User user;
@@ -48,6 +51,11 @@ public class Post extends Timestamped{
         this.title = requestDto.getTitle();
         this.content = requestDto.getContent();
         this.username = username;
+    }
+
+    public void updateLikeCount(int likeCount){
+
+        this.likeCount += likeCount;
     }
 
 

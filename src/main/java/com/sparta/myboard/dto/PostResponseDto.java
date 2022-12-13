@@ -15,6 +15,8 @@ public class PostResponseDto {
     private String title;
     private String username;
     private String content;
+    private int likeCount;
+    private boolean likeCheck;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
 
@@ -25,6 +27,18 @@ public class PostResponseDto {
         this.content = entity.getContent();
         this.createdAt = entity.getCreatedAt();
         this.modifiedAt = entity.getModifiedAt();
+    }
+
+    public PostResponseDto(Post entity, boolean likeCheck) {
+        this.id = entity.getId();
+        this.title = entity.getTitle();
+        this.username = entity.getUsername();
+        this.content = entity.getContent();
+        this.likeCount = entity.getLikeCount();
+        this.likeCheck = likeCheck;
+        this.createdAt = entity.getCreatedAt();
+        this.modifiedAt = entity.getModifiedAt();
 
     }
+
 }

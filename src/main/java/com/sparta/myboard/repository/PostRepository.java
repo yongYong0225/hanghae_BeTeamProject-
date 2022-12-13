@@ -1,7 +1,6 @@
 package com.sparta.myboard.repository;
 
 import com.sparta.myboard.entity.Post;
-import com.sparta.myboard.entity.Post;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

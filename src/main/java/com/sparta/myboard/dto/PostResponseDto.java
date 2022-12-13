@@ -6,9 +6,10 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
-@Setter
 public class PostResponseDto {
     private Long id;
 
@@ -26,5 +27,16 @@ public class PostResponseDto {
         this.createdAt = entity.getCreatedAt();
         this.modifiedAt = entity.getModifiedAt();
 
+    }
+
+    private List<CommentResponseDto> commentList = new ArrayList<>();
+
+    public PostResponseDto(Post post, List<CommentResponseDto> commentList) { // 좋아요 체크 넣으시면 됩니다:)
+        this.id = post.getId();
+        this.title = post.getTitle();
+        this.content = post.getContent();
+        this.createdAt = post.getCreatedAt();
+        this.modifiedAt = post.getModifiedAt();
+        this.commentList = commentList;
     }
 }

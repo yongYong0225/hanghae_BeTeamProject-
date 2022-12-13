@@ -21,7 +21,7 @@ public class PostController {
 
     @PostMapping("/api/post") // 게시글 작성
     public PostResponseDto createPost(@RequestBody PostRequestDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return postService.creatPost(requestDto, userDetails.getUser());
+        return postService.createPost(requestDto, userDetails.getUser());
     }
 
     @GetMapping("/api/post/{id}") // 선택한 게시글 조회

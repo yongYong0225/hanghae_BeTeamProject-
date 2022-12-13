@@ -22,6 +22,9 @@ public class Comment extends Timestamped {
     @Column(nullable = false)
     private String content;  // 댓글 내용
 
+    @Column
+    private int commentLike;
+
     @ManyToOne
     @JoinColumn(name = "post_id", nullable = false)
     private Post post;
@@ -35,9 +38,15 @@ public class Comment extends Timestamped {
         this.username = user.getUsername();
         this.post = post;
         this.user = user;
+        this.commentLike = 0;
     }
 
     public void update(CommentRequestDto commentRequestDto) {
         this.content = commentRequestDto.getContent();
     }
+
+    public void commentLikeUpDown(int num) {
+        this.commentLike = commentLike + num;
+    }
 }
+

@@ -49,6 +49,7 @@ public class Post extends Timestamped{
     }
 
     public void updateLikeCount(int likeCount){
+
         this.likeCount += likeCount;
     }
 

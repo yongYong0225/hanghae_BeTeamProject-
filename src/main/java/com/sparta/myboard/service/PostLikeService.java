@@ -32,7 +32,7 @@ public class PostLikeService {
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new NullPointerException("게시글이 존재하지 않습니다.")
         );
-
+        //커밋테스트
         if(checkPostLike(postId, user)) {
             postLikeRepository.saveAndFlush(new PostLike(post, user));
             post.updateLikeCount(1);

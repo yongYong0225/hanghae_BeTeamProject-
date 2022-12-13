@@ -27,7 +27,7 @@ public class PostLikeService {
         return postLike.isEmpty();
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public PostDeleteResponseDto savePostLike(Long postId, User user){
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new NullPointerException("게시글이 존재하지 않습니다.")
@@ -36,6 +36,7 @@ public class PostLikeService {
         if(checkPostLike(postId, user)) {
             postLikeRepository.saveAndFlush(new PostLike(post, user));
             post.updateLikeCount(1);
+            postRepository.save(post);
             return new PostDeleteResponseDto("좋아요 완료", HttpStatus.OK.value());
         } else {
             postLikeRepository.deleteByPostIdAndUserId(postId, user.getId());

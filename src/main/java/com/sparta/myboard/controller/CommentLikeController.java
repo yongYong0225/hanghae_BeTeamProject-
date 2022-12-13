@@ -1,6 +1,6 @@
 package com.sparta.myboard.controller;
 
-import com.sparta.myboard.dto.CommentLikeResponseDto;
+import com.sparta.myboard.dto.MsgResponseDto;
 import com.sparta.myboard.security.UserDetailsImpl;
 import com.sparta.myboard.service.CommentLikeService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ public class CommentLikeController {
     private final CommentLikeService commentLikeService;
 
     @PostMapping("/comment/{commentId}")
-    public CommentLikeResponseDto commentLike(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long commentId) {
+    public MsgResponseDto commentLike(@AuthenticationPrincipal UserDetailsImpl userDetails, @PathVariable Long commentId) {
         return commentLikeService.CommentLike(userDetails.getUser(),commentId);
     }
 }

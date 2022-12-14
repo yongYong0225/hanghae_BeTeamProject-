@@ -1,7 +1,7 @@
 package com.sparta.myboard.service;
 
 
-import com.sparta.myboard.dto.PostDeleteResponseDto;
+import com.sparta.myboard.dto.MsgResponseDto;
 import com.sparta.myboard.entity.Post;
 import com.sparta.myboard.entity.PostLike;
 import com.sparta.myboard.entity.User;
@@ -28,7 +28,7 @@ public class PostLikeService {
     }
 
     @Transactional
-    public PostDeleteResponseDto savePostLike(Long postId, User user){
+    public MsgResponseDto savePostLike(Long postId, User user){
         Post post = postRepository.findById(postId).orElseThrow(
                 () -> new NullPointerException("게시글이 존재하지 않습니다.")
         );
@@ -37,11 +37,11 @@ public class PostLikeService {
             postLikeRepository.saveAndFlush(new PostLike(post, user));
             post.updateLikeCount(1);
             postRepository.save(post);
-            return new PostDeleteResponseDto("좋아요 완료", HttpStatus.OK.value());
+            return new MsgResponseDto("좋아요 완료", HttpStatus.OK.value());
         } else {
             postLikeRepository.deleteByPostIdAndUserId(postId, user.getId());
             post.updateLikeCount(-1);
-            return new PostDeleteResponseDto("좋아요 취소", HttpStatus.OK.value());
+            return new MsgResponseDto("좋아요 취소", HttpStatus.OK.value());
         }
 
     }

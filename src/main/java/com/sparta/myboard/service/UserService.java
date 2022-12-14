@@ -1,9 +1,6 @@
 package com.sparta.myboard.service;
 
-import com.sparta.myboard.dto.LoginRequestDto;
-import com.sparta.myboard.dto.LoginResponseDto;
-import com.sparta.myboard.dto.SignupRequestDto;
-import com.sparta.myboard.dto.SignupResponseDto;
+import com.sparta.myboard.dto.*;
 import com.sparta.myboard.entity.User;
 import com.sparta.myboard.entity.UserRoleEnum;
 import com.sparta.myboard.jwt.JwtUtil;
@@ -29,7 +26,7 @@ public class UserService {
     private static final String ADMIN_TOKEN = "AAABnvxRVklrnYxKZ0aHgTBcXukeZygoC";
 
     @Transactional
-    public SignupResponseDto signup(SignupRequestDto signupRequestDto){
+    public MsgResponseDto signup(SignupRequestDto signupRequestDto){
         //받아온 유저네임과 패스워드를 변수에 저장
         String username = signupRequestDto.getUsername();
         String password = passwordEncoder.encode(signupRequestDto.getPassword());
@@ -53,11 +50,11 @@ public class UserService {
         User user = new User(username, password, role);
         userRepository.save(user);
 
-        return new SignupResponseDto("회원가입 성공", HttpStatus.OK.value());
+        return new MsgResponseDto("회원가입 성공", HttpStatus.OK.value());
     }
 
     @Transactional(readOnly = true)
-    public LoginResponseDto login(LoginRequestDto loginRequestDto, HttpServletResponse response){
+    public MsgResponseDto login(LoginRequestDto loginRequestDto, HttpServletResponse response){
         String username = loginRequestDto.getUsername();
         String password = loginRequestDto.getPassword();
 
@@ -73,7 +70,7 @@ public class UserService {
 
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername(), user.getRole()));
 
-        return new LoginResponseDto("로그인 성공", HttpStatus.OK.value());
+        return new MsgResponseDto("로그인 성공", HttpStatus.OK.value());
     }
 
 }

@@ -39,6 +39,7 @@ public class PostResponseDto {
         this.title = post.getTitle();
         this.username = post.getUsername();
         this.content = post.getContent();
+        this.likeCount = post.getLikeCount();
         this.createdAt = post.getCreatedAt();
         this.modifiedAt = post.getModifiedAt();
         this.commentList = commentList;

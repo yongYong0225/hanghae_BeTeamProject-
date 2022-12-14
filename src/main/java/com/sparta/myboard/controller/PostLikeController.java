@@ -1,6 +1,6 @@
 package com.sparta.myboard.controller;
 
-import com.sparta.myboard.dto.PostDeleteResponseDto;
+import com.sparta.myboard.dto.MsgResponseDto;
 import com.sparta.myboard.security.UserDetailsImpl;
 import com.sparta.myboard.service.PostLikeService;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ public class PostLikeController {
     private final PostLikeService postLikeService;
 
     @PostMapping("/post/{postId}")
-    public PostDeleteResponseDto savePostLike(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public MsgResponseDto savePostLike(@PathVariable Long postId, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postLikeService.savePostLike(postId, userDetails.getUser());
     }
 }

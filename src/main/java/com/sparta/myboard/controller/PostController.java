@@ -4,8 +4,11 @@ import com.sparta.myboard.dto.*;
 import com.sparta.myboard.security.UserDetailsImpl;
 import com.sparta.myboard.service.PostService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @RestController
@@ -15,8 +18,14 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping("/api/posts") // 전체 게시글 목록 조회
-    public List<PostResponseDto> getPosts() { //#1 메서드 실행
-        return postService.getPosts(); //#8 서비스가 리턴한 데이터를 클라이언트에게 리턴한다.
+    public Page<PostResponseDto> getPosts(
+            @RequestParam("page") int page,
+            @RequestParam("size") int size,
+            @RequestParam("sortBy") String sortBy,
+            @RequestParam("isAsc") boolean isAsc
+    ) { //#1 메서드 실행
+
+        return postService.getPosts(page-1, size, sortBy, isAsc); //#8 서비스가 리턴한 데이터를 클라이언트에게 리턴한다.
     }
 
     @PostMapping("/api/post") // 게시글 작성

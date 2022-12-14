@@ -7,10 +7,15 @@ import com.sparta.myboard.entity.User;
 import com.sparta.myboard.entity.UserRoleEnum;
 import com.sparta.myboard.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,7 +39,12 @@ public class PostService {
 
     // 전체 게시글 목록 조회
     @Transactional(readOnly = true)
-    public List<PostResponseDto> getPosts() {
+    public Page<PostResponseDto> getPosts(int page, int size, String sortBy, boolean isAsc) {
+        // 페이징 처리
+        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
+        Sort sort = Sort.by(direction, sortBy);
+        Pageable pageable = PageRequest.of(page, size, sort);
+
         List<Post> postList = postRepository.findAllPostByOrderByCreatedAtDesc();
         List<PostResponseDto> postResponseDto = new ArrayList<>();
 
@@ -46,7 +56,7 @@ public class PostService {
             // new PostResponseDto에 옮겨담은 post를 postResponseDto에 추가
             postResponseDto.add(new PostResponseDto(post, commentList)); // (post,__ ) 좋아요 담으세요:)
         }
-        return postResponseDto; // 최종 반환
+        return (Page<PostResponseDto>) postResponseDto; // 최종 반환
     }
 
     // 선택 게시글 조회

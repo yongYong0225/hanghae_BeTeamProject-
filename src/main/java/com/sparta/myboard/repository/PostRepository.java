@@ -1,6 +1,8 @@
 package com.sparta.myboard.repository;
 
 import com.sparta.myboard.entity.Post;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.AbstractPersistable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -20,5 +22,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     Optional<Post> findById(Long id);
 
     Boolean existsByIdAndUsername(Long id, String username);
+
+    Page<Post> findAll(Pageable pageable);
 
 }

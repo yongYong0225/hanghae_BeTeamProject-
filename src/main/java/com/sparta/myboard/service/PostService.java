@@ -1,9 +1,6 @@
 package com.sparta.myboard.service;
 
-import com.sparta.myboard.dto.CommentResponseDto;
-import com.sparta.myboard.dto.PostDeleteResponseDto;
-import com.sparta.myboard.dto.PostRequestDto;
-import com.sparta.myboard.dto.PostResponseDto;
+import com.sparta.myboard.dto.*;
 import com.sparta.myboard.entity.Comment;
 import com.sparta.myboard.entity.Post;
 import com.sparta.myboard.entity.User;
@@ -87,17 +84,17 @@ public class PostService {
 
     // 게시글 삭제
     @Transactional
-    public PostDeleteResponseDto deletePost(Long id, User user) {
+    public MsgResponseDto deletePost(Long id, User user) {
 
         UserRoleEnum userRoleEnum = user.getRole();
 
         //유효한 토큰일 경우 삭제
         if (user.getRole().equals(UserRoleEnum.ADMIN)) {
             postRepository.deleteById(id);
-            return new PostDeleteResponseDto("게시글 삭제 성공", HttpStatus.OK.value());
+            return new MsgResponseDto("게시글 삭제 성공", HttpStatus.OK.value());
         } else if (postRepository.existsByIdAndUsername(id, user.getUsername()) && userRoleEnum == UserRoleEnum.USER){
             postRepository.deleteById(id);
-            return new PostDeleteResponseDto("게시글 삭제 성공", HttpStatus.OK.value());
+            return new MsgResponseDto("게시글 삭제 성공", HttpStatus.OK.value());
         } else {
             throw new IllegalArgumentException("게시글 삭제 실패");
             //새로운 출발...

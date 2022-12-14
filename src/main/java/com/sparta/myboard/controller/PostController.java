@@ -37,7 +37,7 @@ public class PostController {
     }
 
     @DeleteMapping("/api/post/{id}") //선택한 게시글 삭제
-    public PostDeleteResponseDto deletePost(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
+    public MsgResponseDto deletePost(@PathVariable Long id, @AuthenticationPrincipal UserDetailsImpl userDetails) {
         return postService.deletePost(id, userDetails.getUser());
     }
 }

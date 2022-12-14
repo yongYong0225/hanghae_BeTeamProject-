@@ -34,6 +34,7 @@ public class PostResponseDto {
     public PostResponseDto(Post post, List<CommentResponseDto> commentList) { // 좋아요 체크 넣으시면 됩니다:)
         this.id = post.getId();
         this.title = post.getTitle();
+        this.username = post.getUsername();
         this.content = post.getContent();
         this.createdAt = post.getCreatedAt();
         this.modifiedAt = post.getModifiedAt();

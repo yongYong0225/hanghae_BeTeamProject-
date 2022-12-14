@@ -39,12 +39,7 @@ public class PostService {
 
     // 전체 게시글 목록 조회
     @Transactional(readOnly = true)
-    public Page<PostResponseDto> getPosts(int page, int size, String sortBy, boolean isAsc) {
-        // 페이징 처리
-        Sort.Direction direction = isAsc ? Sort.Direction.ASC : Sort.Direction.DESC;
-        Sort sort = Sort.by(direction, sortBy);
-        Pageable pageable = PageRequest.of(page, size, sort);
-
+    public List<PostResponseDto> getPosts() {
         List<Post> postList = postRepository.findAllPostByOrderByCreatedAtDesc();
         List<PostResponseDto> postResponseDto = new ArrayList<>();
 

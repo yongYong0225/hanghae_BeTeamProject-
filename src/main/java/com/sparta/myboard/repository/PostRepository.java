@@ -23,6 +23,4 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 
     Boolean existsByIdAndUsername(Long id, String username);
 
-    Page<Post> findAll(Pageable pageable);
-
 }

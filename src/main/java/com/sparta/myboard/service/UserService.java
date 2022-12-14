@@ -37,7 +37,7 @@ public class UserService {
         //회원 중복 확인, 받아온 값이 유저레포지토리에 있는지 확인
         Optional<User> found = userRepository.findByUsername(username);
         if (found.isPresent()) { //존재하는 것을 찾았다면 에러처리
-            throw new IllegalArgumentException("이미 등록된 ID 입니다.");
+            throw new IllegalArgumentException("중복된 username 입니다.");
         }
 
         // 사용자 ROLE 확인
@@ -68,7 +68,7 @@ public class UserService {
 
         //비밀번호 확인
         if(!passwordEncoder.matches(password, user.getPassword())){
-            throw  new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw  new IllegalArgumentException("회원을 찾을 수 없습니다.");
         }
 
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername(), user.getRole()));

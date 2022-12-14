@@ -30,4 +30,5 @@ public class UserController {
     public LoginResponseDto login(@RequestBody LoginRequestDto loginRequestDto, HttpServletResponse response) {
         return userService.login(loginRequestDto, response);
     }
+
 }

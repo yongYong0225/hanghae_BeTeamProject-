@@ -62,7 +62,7 @@ public class PostService {
             post.update(requestDto, user.getUsername());
             return new PostResponseDto(post);
         } else {
-            throw new IllegalArgumentException("게시글을 삭제할 수 없습니다.");
+            throw new IllegalArgumentException("작성자만 삭제/수정할 수 있습니다.");
         }
     }
 
@@ -80,7 +80,6 @@ public class PostService {
             return new PostDeleteResponseDto("게시글 삭제 성공", HttpStatus.OK.value());
         } else {
             throw new IllegalArgumentException("게시글 삭제 실패");
-            //새로운 출발...
         }
     }
 }

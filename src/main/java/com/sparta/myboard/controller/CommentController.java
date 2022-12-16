@@ -12,7 +12,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/api/comment")
-@RestController
 @RequiredArgsConstructor
 public class CommentController {
     private final CommentService commentService;

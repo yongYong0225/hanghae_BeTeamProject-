@@ -91,7 +91,7 @@ public class PostService {
         //유효한 토큰일 경우 삭제
         if (user.getRole().equals(UserRoleEnum.ADMIN)) {
             postRepository.deleteById(id);
-            return new MsgResponseDto("게시글 삭제 성공", HttpStatus.OK.value());
+            return new MsgResponseDto("관리자 권한으로 게시글 삭제 성공", HttpStatus.OK.value());
         } else if (postRepository.existsByIdAndUsername(id, user.getUsername()) && userRoleEnum == UserRoleEnum.USER){
             postRepository.deleteById(id);
             return new MsgResponseDto("게시글 삭제 성공", HttpStatus.OK.value());
